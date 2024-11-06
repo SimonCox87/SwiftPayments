@@ -1,19 +1,36 @@
 body {
   margin: 40px;
-  margin-top: 10px;
+  margin-top: 20px;
   height: fit-content;
   width: 100vw;
   display: flexbox;
   position: relative;
 }
 
-.main-header {
+.header {
+  display:flex;
+  flex-direction: row;
+  width: 80%;
+  gap: 40px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+}
+
+.header h1 {
+  cursor: pointer;
+}
+
+.logo {
+  height: 60px;
+  width: 360px;
+}
+
+.table-header {
   display: flex;
   align-items: center ;
   text-align: justify;
-  position: fixed;
+  position: absolute;
 }
-
 
 .button-header {
   display: flex;
@@ -105,20 +122,16 @@ button:hover {
 
 .row-declined {
   background-color: rgb(255, 179, 186);
-  opacity: 0.66;
 }
 
 .row-live {
   background-color: rgb(119, 221, 119);
-  opacity: 0.66;
 }
 
 .row-application {
   background-color: rgb(255, 191, 102);
-  opacity: 0.66;
 }
 
 .row-prospect {
   background-color: rgb(173, 216, 230);
-  opacity: 0.66;
 }

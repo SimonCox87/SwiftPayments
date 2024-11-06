@@ -1,15 +1,19 @@
 // import of the following code from react and firestore modules.  CustomerTable is our table component
 // which has it's own script.
 import React from "react";
-import Header from "./components/Header"
+import Header from "./components/Header";
+import TableHeader from "./components/TableHeader";
 import CustomerTable from "./components/CustomerTable";
+import Companies from "./components/Companies";
+import Contact from "./components/Contact";
+import Locations from "./components/Locations"
+
 import { onSnapshot, addDoc, doc, deleteDoc, setDoc } from "firebase/firestore";
 import { customerCollection, db } from "./firebase";
 
 // Create our main App function, which holds our data, functions and basic html structure for our
 // components and corresponding html/JSX elements.
 function App() {
-
   // React use States.  Contain an array and a setter function.  When these states are changed using their
   // prescribed setting functions Reacts DOM is updated causing re-render of page to reflect change in state.  Essentially when
   // the data is changed the webpage and it's underlying components will be altered to reflect this change.
@@ -19,6 +23,7 @@ function App() {
   const [customerId, setCustomerId] = React.useState(null);
   const [tempText, setTempText] = React.useState({});
   const [debounceTimeouts, setDebounceTimeouts] = React.useState({});
+  const [page, setPage] = React.useState(null);
 
   // Load data from firebase and close when session is over
   React.useEffect(() => {
@@ -48,13 +53,13 @@ function App() {
   }
 
   // Delete function to remove customer record from the database
-  async function del() {  
+  async function del() {
     if (!customerId) {
-      alert("Please select a valid customer to delete.");
+      alert("Please select a customer to delete.");
       return;
     }
     // Attempt to create document reference
-    const docRef = doc(db, "customers", customerId);  
+    const docRef = doc(db, "customers", customerId);
     // Attempt deletion
     await deleteDoc(docRef);
     setCustomerId(null); // Clear customerId after deletion
@@ -115,7 +120,7 @@ function App() {
     debounceUpdate(id, field, value);
   };
 
-  // function that handles the filtering of the customer data by status.
+  // Function that handles the filtering of the customer data by status.
   const handleFilter = (status) => {
     setFilterStatus(status);
     if (status === "All") {
@@ -127,7 +132,7 @@ function App() {
     }
   };
 
-  // function to colour rows by status.  result of each conditional (if) statement is the relevant css class.
+  // Function to colour rows by status.  Result of each conditional (if) statement is the relevant css class.
   function rowColour(status) {
     if (status === "Declined") {
       return "row-declined";
@@ -140,17 +145,13 @@ function App() {
     }
   }
 
-  // Below elements are returned by app function.
-  // 1. The Header component is returned and its props are defined and passed to the component.
-  // 2. The CustomerTable component is returned and its props are defined and passed to the component.
-  return (
-    <div>
-      <Header 
-        filterStatus={filterStatus}
-        add={add}
-        deleteDoc={del}
-      />
-      < CustomerTable 
+  // Create a dictionary object that contains all of our components
+  const componentMap = {
+    Companies: <Companies />,
+    Contact: <Contact />,
+    Locations: <Locations />,
+    Deals: (
+      <CustomerTable
         customerData={filteredCustomerData}
         selectId={selectId}
         handleUpdate={handleUpdate}
@@ -161,6 +162,29 @@ function App() {
         tempText={tempText}
         amend={amend}
       />
+    ),
+  };
+
+// Function to render the different tables.  This function is executed in the return statement below.
+// In the return statement the function receives the page state as a parameter.
+function renderPage(table) {
+  return componentMap[table] || componentMap["Deals"];
+}
+
+  // Below elements are returned by app function.
+  // 1. The TableHeader component is returned and its props are defined and passed to the component.
+  // 2. The CustomerTable component is returned and its props are defined and passed to the component.
+
+  // Tasks
+  // 3. Create the Companies database - Refer to Chat GPT log and research this yourself.
+
+  console.log(page)
+
+  return (
+    <div>
+      <Header setPage={setPage} />
+      <TableHeader filterStatus={filterStatus} add={add} deleteDoc={del} />
+      {renderPage(page)}
     </div>
   );
 }

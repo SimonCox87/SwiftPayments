@@ -54,6 +54,7 @@ function CustomerTable({
             style={{
               backgroundColor:
                 customer.id === customerId && "RGB(200, 162, 200)",
+                opacity: 0.66
             }}
           >
             <td>
