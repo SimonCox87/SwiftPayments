@@ -6,10 +6,9 @@ import TableHeader from "./components/TableHeader";
 import CustomerTable from "./components/CustomerTable";
 import Companies from "./components/Companies";
 import Contact from "./components/Contact";
-import Locations from "./components/Locations"
-
-import { onSnapshot, addDoc, doc, deleteDoc, setDoc } from "firebase/firestore";
-import { customerCollection, db } from "./firebase";
+import Locations from "./components/Locations";
+import { onSnapshot, addDoc, doc, setDoc, collection, query, where, getDocs, writeBatch } from "firebase/firestore";
+import { companies, customers, db } from "./firebase";
 
 // Create our main App function, which holds our data, functions and basic html structure for our
 // components and corresponding html/JSX elements.
@@ -27,7 +26,7 @@ function App() {
 
   // Load data from firebase and close when session is over
   React.useEffect(() => {
-    const unsubscribe = onSnapshot(customerCollection, function (snapshot) {
+    const unsubscribe = onSnapshot(customers, function (snapshot) {
       // Sync up our local customerData array with the snapshot data and sort by time added
       const customerArr = snapshot.docs
         .map((doc) => ({ ...doc.data(), id: doc.id }))
@@ -58,10 +57,40 @@ function App() {
       alert("Please select a customer to delete.");
       return;
     }
-    // Attempt to create document reference
-    const docRef = doc(db, "customers", customerId);
-    // Attempt deletion
-    await deleteDoc(docRef);
+
+    // Create collections array
+    const collectionNames = ["customers", "companies"];
+
+    // Loop through the collections with the help of the collectionNames array
+    for (const collectionName of collectionNames) {
+      // Create a batch instance.  This instance will collect all the write operations
+      // (additions, updates,deletions) until they are committed so that they are all
+      // executed simultaneously
+      const batch = writeBatch(db);
+
+      // Delete customers collection first, as the collection does not have a linkedCustomerId
+      // field like the other collections do
+      if (collectionName === "customers") {
+        // Create the docref to be added to batch
+        const docRef = doc(db, "customers", customerId);
+        // Send the document to batch
+        batch.delete(docRef);
+      } else {
+        // Define a query to find documents with linkedCustomerId matching the customerId
+        const collRef = collection(db, collectionName);
+        const companiesQuery = query(
+          collRef,
+          where("linkedCustomerId", "==", customerId)
+        );
+
+        // Execute the query to get matching documents
+        const querySnapshot = await getDocs(companiesQuery);
+        const docRef = querySnapshot.docs[0].ref;
+        batch.delete(docRef);
+      }
+      // Commit the batch delete operation
+      await batch.commit();
+    }
     setCustomerId(null); // Clear customerId after deletion
   }
 
@@ -78,7 +107,25 @@ function App() {
       status: null,
       created: Date.now(),
     };
-    await addDoc(customerCollection, newCustomer);
+    // Add a new document to the Customers collection and get the document reference
+    const docRef = await addDoc(customers, newCustomer);
+
+    // Use the document ID and some fields from newCustomer to create linked data in other collections
+    // Get the document ID of the newly created customer
+    const customerId = docRef.id;
+
+    // Create newCompany object which will form the basis of our new document for companies collection
+    const newCompany = {
+      linkedCustomerId: customerId, // linked customer id, linking back to the corresponding document in customers
+      name: null,
+      category: null,
+      number: null,
+      user: null,
+      address: null,
+    };
+
+    // Add a related document in the Companies collection, using the customer ID and any relevant fields
+    await addDoc(companies, newCompany);
   }
 
   // Function to amend existing customer data.
@@ -165,20 +212,17 @@ function App() {
     ),
   };
 
-// Function to render the different tables.  This function is executed in the return statement below.
-// In the return statement the function receives the page state as a parameter.
-function renderPage(table) {
-  return componentMap[table] || componentMap["Deals"];
-}
-
+  // Function to render the different tables.  This function is executed in the return statement below.
+  // In the return statement the function receives the page state as a parameter.
+  function renderPage(table) {
+    return componentMap[table] || componentMap["Deals"];
+  }
   // Below elements are returned by app function.
   // 1. The TableHeader component is returned and its props are defined and passed to the component.
   // 2. The CustomerTable component is returned and its props are defined and passed to the component.
 
   // Tasks
-  // 3. Create the Companies database - Refer to Chat GPT log and research this yourself.
-
-  console.log(page)
+  // 3. Create the Companies database - Refer to Chat GPT log and research this.
 
   return (
     <div>

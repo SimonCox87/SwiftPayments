@@ -44,6 +44,7 @@ body {
   text-align: justify;
   position: absolute;
   width: 100%;
+  margin-left: 20px;
 }
 
 .button-header {
@@ -53,11 +54,14 @@ body {
   gap: 25px;
   width: 100%;
   position: absolute;
+  left: 79vw;
 }
 
 table {
   margin-top: 80px;
-  width: 100%; /* Auto-size the table based on content */
+  margin-left: 20px;
+  margin-right: 20px;
+  width: calc(100% - 40px); /* Auto-size the table based on content */
   border-collapse: collapse;
   table-layout: auto; /* Ensures columns adjust to content */
   border-radius: 5px;
