@@ -5,10 +5,10 @@ function Header({ setPage }) {
     return (
         <div className="header">
             <img src={logo} alt="Swift Payments" className="logo"/>
-            <h1 onClick={() => setPage("Deals")}>Deals</h1>
-            <h1 onClick={() => setPage("Locations")}>Locations</h1>
-            <h1 onClick={() => setPage("Companies")}>Companies</h1>  
-            <h1 onClick={() => setPage("Contact")}>Contact</h1>        
+            <h2 onClick={() => setPage("Deals")}>Deals</h2>
+            <h2 onClick={() => setPage("Locations")}>Locations</h2>
+            <h2 onClick={() => setPage("Companies")}>Companies</h2>  
+            <h2 onClick={() => setPage("Contact")}>Contact</h2>        
         </div>
     )
 }

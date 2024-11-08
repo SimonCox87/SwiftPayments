@@ -16,8 +16,17 @@ body {
   margin-bottom: 0px;
 }
 
-.header h1 {
+.header h2 {
   cursor: pointer;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #003366;
+}
+
+.header:hover h2 {
+  cursor: pointer;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #1db0e9;
+  text-decoration: underline;
 }
 
 .logo {
