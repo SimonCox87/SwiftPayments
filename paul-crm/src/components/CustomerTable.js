@@ -6,15 +6,15 @@ function CustomerTable({
   customerData,
   selectId,
   handleUpdate,
+  handlePaste,
   rowColour,
   customerId,
   handleFilter,
   tempText,
   amend,
 }) {
-
   // Table is returned by this function.
-  // Create the table headers  
+  // Create the table headers
   // We loop through customerData (derived from filteredCustomerData) to populate table rows
   // Each cell of the table contains data and a function that triggers when data is amended.
   // Also styling is applied to table rows to determine colouring based on status.
@@ -54,7 +54,7 @@ function CustomerTable({
             style={{
               backgroundColor:
                 customer.id === customerId && "RGB(200, 162, 200)",
-                opacity: 0.66
+              opacity: 0.66,
             }}
           >
             <td>
@@ -66,7 +66,15 @@ function CustomerTable({
                   customer.companyName
                 }
                 onChange={(e) =>
-                  handleUpdate(customer.id, "companyName", e.target.value)
+                  handleUpdate(
+                    "customers",
+                    customer.id,
+                    "companyName",
+                    e.target.value
+                  )
+                }
+                onPaste={(e) =>
+                  handlePaste("customers", customer.id, "companyName", e)
                 }
               />
             </td>
@@ -79,7 +87,15 @@ function CustomerTable({
                   customer.tradingName
                 }
                 onChange={(e) =>
-                  handleUpdate(customer.id, "tradingName", e.target.value)
+                  handleUpdate(
+                    "customers",
+                    customer.id,
+                    "tradingName",
+                    e.target.value
+                  )
+                }
+                onPaste={(e) =>
+                  handlePaste("customers", customer.id, "tradingName", e)
                 }
               />
             </td>
@@ -92,7 +108,12 @@ function CustomerTable({
                   customer.contactName
                 }
                 onChange={(e) =>
-                  handleUpdate(customer.id, "contactName", e.target.value)
+                  handleUpdate(
+                    "customers",
+                    customer.id,
+                    "contactName",
+                    e.target.value
+                  )
                 }
               />
             </td>
@@ -104,7 +125,15 @@ function CustomerTable({
                   customer.telNumber
                 }
                 onChange={(e) =>
-                  handleUpdate(customer.id, "telNumber", e.target.value)
+                  handleUpdate(
+                    "customers",
+                    customer.id,
+                    "telNumber",
+                    e.target.value
+                  )
+                }
+                onPaste={(e) =>
+                  handlePaste("customers", customer.id, "telNumber", e)
                 }
               />
             </td>
@@ -116,7 +145,15 @@ function CustomerTable({
                   customer.email
                 }
                 onChange={(e) =>
-                  handleUpdate(customer.id, "email", e.target.value)
+                  handleUpdate(
+                    "customers",
+                    customer.id,
+                    "email",
+                    e.target.value
+                  )
+                }
+                onPaste={(e) =>
+                  handlePaste("customers", customer.id, "email", e)
                 }
               />
             </td>
@@ -128,7 +165,15 @@ function CustomerTable({
                   customer.merchantId
                 }
                 onChange={(e) =>
-                  handleUpdate(customer.id, "merchantId", e.target.value)
+                  handleUpdate(
+                    "customers",
+                    customer.id,
+                    "merchantId",
+                    e.target.value
+                  )
+                }
+                onPaste={(e) =>
+                  handlePaste("customers", customer.id, "merchantId", e)
                 }
               />
             </td>
@@ -140,7 +185,15 @@ function CustomerTable({
                   customer.bankNumber
                 }
                 onChange={(e) =>
-                  handleUpdate(customer.id, "bankNumber", e.target.value)
+                  handleUpdate(
+                    "customers",
+                    customer.id,
+                    "bankNumber",
+                    e.target.value
+                  )
+                }
+                onPaste={(e) =>
+                  handlePaste("customers", customer.id, "bankNumber", e)
                 }
               />
             </td>
@@ -152,8 +205,12 @@ function CustomerTable({
                   (tempText[customer.id] && tempText[customer.id].status) ||
                   customer.status
                 }
-                onChange={(e) => amend(customer.id, "status", e.target.value)}
+                onChange={(e) => {
+                  e.target.value !== "placeholder" &&
+                    amend("customers", customer.id, "status", e.target.value);
+                }}
               >
+                <option value="placeholder">status...</option>
                 <option value="Live">Live</option>
                 <option value="Application">Application</option>
                 <option value="Declined">Declined</option>

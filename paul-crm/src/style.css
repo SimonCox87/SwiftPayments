@@ -28,7 +28,7 @@ body {
 .header h2:hover {
   cursor: pointer;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  color: #1db0e9;
+  color: rgb(29, 176, 233);
   text-decoration: underline;
 }
 
