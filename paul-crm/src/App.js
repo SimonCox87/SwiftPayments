@@ -311,7 +311,7 @@ function App() {
   return (
     <div>
       <Header setPage={setPage} page={page} />
-      <TableHeader filterStatus={filterStatus} add={add} deleteDoc={del} />
+      <TableHeader filterStatus={filterStatus} add={add} deleteDoc={del} page={page} />
       {renderPage(page)}
     </div>
   );
