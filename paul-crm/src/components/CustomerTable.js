@@ -9,9 +9,11 @@ function CustomerTable({
   handlePaste,
   rowColour,
   customerId,
-  handleFilter,
+  filterStatus,
   tempText,
   amend,
+  setFilterStatus
+  
 }) {
   // Table is returned by this function.
   // Create the table headers
@@ -34,7 +36,8 @@ function CustomerTable({
             Status
             <select
               id="statusFilter"
-              onChange={(e) => handleFilter(e.target.value)}
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
             >
               <option value="All">All</option>
               <option value="Live">Live</option>

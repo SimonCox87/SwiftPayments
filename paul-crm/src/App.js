@@ -37,8 +37,7 @@ function App() {
   // React use References.  For values that persist between renders.  We use these so that when the values of these
   // references changes a re-render of the page is not triggered making for a more performant web page.
   const debounceTimeoutsRef = React.useRef({});
-  const customerIdRef = React.useRef(null)
-  
+  const customerIdRef = React.useRef(null)  
 
   // Load customers n data from firebase and close when session is over
   React.useEffect(() => {
@@ -65,13 +64,14 @@ function App() {
     return unsubscribeCompanies;
   }, []);
 
-  // Ensure that table remains filtered when a new call and response is made to firestore
+  // Ensure that tables remain filtered
   React.useEffect(() => {
     setFilteredCustomerData(
       filterStatus === "All"
         ? customerData
         : customerData.filter((customer) => customer.status === filterStatus)
     );
+      
   }, [customerData, filterStatus]);
 
   React.useEffect(() => {
@@ -80,7 +80,8 @@ function App() {
         ? companyData
         : companyData.filter((company) => company.linkedStatus === filterStatus)
     );
-  }, [customerData, companyData, filterStatus]);
+    console.log(`filter company - ${filterStatus}`)
+  }, [companyData, filterStatus]);
 
   // React useEffect that syncs up companies and customers databases when changes are made
   // to the customers database
@@ -128,10 +129,10 @@ function App() {
     }
 
     // Create ns array
-    const nNames = ["customers", "companies"];
+    const collects = ["customers", "companies"];
 
     // Loop through the ns with the help of the nNames array
-    for (const nName of nNames) {
+    for (const collect of collects) {
       // Create a batch instance.  This instance will ll the write operations
       // (additions, updates,deletions) until they are committed so that they are all
       // executed simultaneously
@@ -139,14 +140,14 @@ function App() {
 
       // Delete customers n first, as the n does not have a linkedCustomerId
       // field like the other ns do
-      if (nName === "customers") {
+      if (collect === "customers") {
         // Create the docref to be added to batch
         const docRef = doc(db, "customers", customerIdRef.current);
         // Send the document to batch
         batch.delete(docRef);
       } else {
         // Define a query to find documents with linkedCustomerId matching the customerId
-        const collRef = collection(db, nName);
+        const collRef = collection(db, collect);
         const companiesQuery = query(
           collRef,
           where("linkedCustomerId", "==", customerIdRef.current)
@@ -245,18 +246,6 @@ function App() {
     handleUpdate(collect, id, field, pastedValue);
   };
 
-  // Function that handles the filtering of the customer data by status.
-  const handleFilter = (status) => {
-    setFilterStatus(status);
-    if (status === "All") {
-      setFilteredCustomerData(customerData);
-    } else {
-      setFilteredCustomerData(
-        customerData.filter((customer) => customer.status === status)
-      );
-    }
-  };
-
   // Map object containing possible statuses and their corresponding css classes
   const rowColourMap = {
     Declined: "row-declined",
@@ -292,9 +281,10 @@ function App() {
         rowColour={rowColour}
         customerId={customerIdRef}
         filterStatus={filterStatus}
-        handleFilter={handleFilter}
+        setFilterStatus={setFilterStatus}
         tempText={tempText}
         amend={amend}
+        page={page}
       />
     ),
   };
@@ -307,7 +297,7 @@ function App() {
   // Below elements are returned by app function.
   // 1. The TableHeader component is returned and its props are defined and passed to the component.
   // 2. The CustomerTable component is returned and its props are defined and passed to the component.
-  
+
   return (
     <div>
       <Header setPage={setPage} page={page} />

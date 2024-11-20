@@ -1,6 +1,12 @@
 import React from "react";
 
-function Companies({ companyData, handleUpdate, handlePaste, tempText, rowColour }) {
+function Companies({
+  companyData,
+  handleUpdate,
+  handlePaste,
+  tempText,
+  rowColour,
+}) {
   return (
     <table>
       <thead>
@@ -14,33 +20,27 @@ function Companies({ companyData, handleUpdate, handlePaste, tempText, rowColour
       </thead>
       <tbody>
         {companyData.map((company, index) => (
-          <tr 
-            key={index}
-            className={rowColour(company.linkedStatus)}
-           >
+          <tr key={index} className={rowColour(company.linkedStatus)}>
             <td>
               <input
                 type="text"
-                value={(tempText[company.id] &&
-                  tempText[company.id].name) || company.name}
+                value={
+                  (tempText[company.id] && tempText[company.id].name) ||
+                  company.name
+                }
                 onChange={(e) =>
-                  handleUpdate(
-                    "companies",
-                    company.id,
-                    "name",
-                    e.target.value
-                  )
+                  handleUpdate("companies", company.id, "name", e.target.value)
                 }
-                onPaste={(e) =>
-                  handlePaste("companies", company.id, "name", e)
-                }
+                onPaste={(e) => handlePaste("companies", company.id, "name", e)}
               />
             </td>
             <td>
               <input
                 type="text"
-                value={(tempText[company.id] &&
-                  tempText[company.id].category) || company.category}
+                value={
+                  (tempText[company.id] && tempText[company.id].category) ||
+                  company.category
+                }
                 onChange={(e) =>
                   handleUpdate(
                     "companies",
@@ -57,8 +57,10 @@ function Companies({ companyData, handleUpdate, handlePaste, tempText, rowColour
             <td>
               <input
                 type="text"
-                value={(tempText[company.id] &&
-                  tempText[company.id].number) || company.number}
+                value={
+                  (tempText[company.id] && tempText[company.id].number) ||
+                  company.number
+                }
                 onChange={(e) =>
                   handleUpdate(
                     "companies",
@@ -75,15 +77,12 @@ function Companies({ companyData, handleUpdate, handlePaste, tempText, rowColour
             <td>
               <input
                 type="text"
-                value={(tempText[company.id] && 
-                  tempText[company.id].user) || company.user}
+                value={
+                  (tempText[company.id] && tempText[company.id].user) ||
+                  company.user
+                }
                 onChange={(e) =>
-                  handleUpdate(
-                    "companies",
-                    company.id,
-                    "user",
-                    e.target.value
-                  )
+                  handleUpdate("companies", company.id, "user", e.target.value)
                 }
                 onPaste={(e) =>
                   handlePaste("companies", company.user, "user", e)
@@ -93,8 +92,10 @@ function Companies({ companyData, handleUpdate, handlePaste, tempText, rowColour
             <td>
               <input
                 type="text"
-                value={(tempText[company.id] &&
-                  tempText[company.id].address) || company.address}
+                value={
+                  (tempText[company.id] && tempText[company.id].address) ||
+                  company.address
+                }
                 onChange={(e) =>
                   handleUpdate(
                     "companies",
@@ -105,7 +106,7 @@ function Companies({ companyData, handleUpdate, handlePaste, tempText, rowColour
                 }
                 onPaste={(e) =>
                   handlePaste("companies", company.address, "adress", e)
-                }  
+                }
               />
             </td>
           </tr>
