@@ -3,12 +3,12 @@ import { getFirestore, collection } from "firebase/firestore";
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCYFUxdJsM0T6ApIE8BLF14OQj1GMGD7-4",
-  authDomain: "paul-crm.firebaseapp.com",
-  projectId: "paul-crm",
-  storageBucket: "paul-crm.appspot.com",
-  messagingSenderId: "627591975959",
-  appId: "1:627591975959:web:8a5c083aa6dc0d2038f852"
+  apiKey: "api-key",
+  authDomain: "crm.firebaseapp.com",
+  projectId: "crm",
+  storageBucket: "crm.appspot.com",
+  messagingSenderId: "id",
+  appId: "id"
 };
 
 const app = initializeApp(firebaseConfig);
