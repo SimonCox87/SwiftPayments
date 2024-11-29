@@ -1,5 +1,0 @@
-# Excludes node modules
-node_modules/
-
-# Excludes macOS system files
-.DS_Store
