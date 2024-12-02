@@ -3,7 +3,7 @@
     b - open the folder in vs code
     c - open a terminal session and enter the following command; git clone https://github.com/SimonCox87/SwiftPayments.git
 
-2. Navigate to paul-crm directory in the terminal using; cd paul-crm
+2. Navigate to crm directory in the terminal using; cd crm
 
 3. Enter the following command in the terminal to build the docker image (this may take a few minutes);
     docker build -f crm -t my-app .
