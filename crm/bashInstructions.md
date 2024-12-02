@@ -1,5 +1,5 @@
-1. Navigate to paul-crm folder in the terminal
-    cd paul-crm
+1. Navigate to crm folder in the terminal
+    cd crm
 
 2. Type the following command in the terminal;
     bash install-modules
